@@ -45,7 +45,6 @@ public class TeleOp2_0 extends LinearOpMode {
 
     //scissor variables
     double scissorPower = 0;
-    int servoPosition = 0;
 
     //toggle values
     boolean omegaPivotToggle = false;
@@ -73,8 +72,9 @@ public class TeleOp2_0 extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         scissorDrive = hardwareMap.get(DcMotor.class, "scissor_drive_1");
         turret = hardwareMap.get(Servo.class, "turret_servo");
-        omegaPivot = hardwareMap.get(Servo.class, "pivot");
-        omegaPinch = hardwareMap.get(Servo.class, "claw_servo");
+        omegaPivot = hardwareMap.get(Servo.class, "omega_pivot");
+        omegaPinch = hardwareMap.get(Servo.class, "omega_pinch");
+        armSlide = hardwareMap.get(DcMotor.class, "arm_drive");
 
         //Make Motors have correct direction
         frontLeftDrive.setDirection(FORWARD);
@@ -102,6 +102,8 @@ public class TeleOp2_0 extends LinearOpMode {
             turret();
 
             clawOMEGA();
+
+            arm();
 
             //Show Telemetry Data
             telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -238,5 +240,11 @@ public class TeleOp2_0 extends LinearOpMode {
             Thread.sleep(200);
             omegaPivotToggle = false;
         }
+    }
+
+    private void arm() {
+
+        armSlide.setPower(gamepad2.left_stick_y);
+
     }
 }
