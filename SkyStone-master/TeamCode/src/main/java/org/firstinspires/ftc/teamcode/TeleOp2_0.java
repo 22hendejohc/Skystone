@@ -146,12 +146,12 @@ public class TeleOp2_0 extends LinearOpMode {
     private void scissor() throws InterruptedException {
         if (gamepad2.right_trigger != 0 || gamepad2.left_trigger != 0) {
             if (gamepad2.right_trigger != 0) {
-                scissorDrive.setTargetPosition(scissorDrive.getCurrentPosition()-14);
+                scissorDrive.setTargetPosition(round(scissorDrive.getCurrentPosition() - 14 * gamepad2.right_trigger));
                 scissorDrive.setPower(1);
                 Thread.sleep(TURRET_SLEEP_TIME);
 
             } else if (gamepad2.left_trigger != 0) {
-                scissorDrive.setTargetPosition(scissorDrive.getCurrentPosition()+14);
+                scissorDrive.setTargetPosition(round(scissorDrive.getCurrentPosition() + 14 * gamepad2.left_trigger));
                 scissorDrive.setPower(1);
                 Thread.sleep(TURRET_SLEEP_TIME);
             } else {
