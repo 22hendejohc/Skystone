@@ -94,7 +94,13 @@ public class TeleOp2_0 extends LinearOpMode {
         stopAndResetEncoder(scissorDrive);
 
         //Init turret
-        turret.setPosition(0);
+        turret.setPosition(.5);
+
+        clawPivot.setPosition(.5);
+        clawPinch.setPosition(.5);
+
+        omegaPivot.setPosition(.5);
+        omegaPinch.setPosition(.5);
 
         // Wait for start
         waitForStart();
