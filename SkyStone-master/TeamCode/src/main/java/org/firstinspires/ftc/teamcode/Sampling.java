@@ -31,10 +31,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.vuforia.CameraDevice;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
@@ -139,18 +141,24 @@ public class Sampling extends LinearOpMode {
     /**
      * Initialize the Vuforia localization engine.
      */
+    VuforiaSkyStone vuforiaSkyStone = new VuforiaSkyStone();
     private void initVuforia() {
+
+
+        vuforiaSkyStone.initialize(VUFORIA_KEY, CameraDirection.FRONT, true, false, VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES, 0,0,0,0,-90,0,true);
+
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        //VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = CameraDirection.FRONT;
-        parameters.fillCameraMonitorViewParent = true;
+        //parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        //parameters.cameraDirection = CameraDirection.FRONT;
+        //parameters.fillCameraMonitorViewParent = true;
+
 
         //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        //vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the TensorFlow Object Detection engine.
     }
@@ -162,8 +170,8 @@ public class Sampling extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.8;
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfodParameters.minimumConfidence = 0.4;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforiaSkyStone.getVuforiaLocalizer());
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 }

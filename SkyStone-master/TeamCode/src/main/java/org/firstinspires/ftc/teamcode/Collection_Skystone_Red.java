@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="Build Zone - Park", group="Linear Opmode")
+@Autonomous(name="Collection Side Skystone REd", group="Linear Opmode")
 
 
 public class Collection_Skystone_Red extends Auto2_0 {

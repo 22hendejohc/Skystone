@@ -12,7 +12,7 @@ import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 import static java.lang.Math.PI;
 
-@Autonomous(name="Build Zone - Park", group="Linear Opmode")
+@Autonomous(name="Collection Side Skystone Blue", group="Linear Opmode")
 //@Disabled
 
 public class Collection_Skystone_Blue extends Auto2_0 {

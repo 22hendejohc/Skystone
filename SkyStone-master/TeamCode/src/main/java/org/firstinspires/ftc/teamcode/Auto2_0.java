@@ -33,7 +33,7 @@ import static java.lang.Math.sin;
 @Autonomous(name="Template", group="Linear Opmode")
 @Disabled
 
- abstract class Auto2_0 extends LinearOpMode{
+ public abstract class Auto2_0 extends LinearOpMode{
 
     enum SkytonePostion {
         LEFT, CENTER, RIGHT
@@ -226,7 +226,7 @@ import static java.lang.Math.sin;
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.6;
+        tfodParameters.minimumConfidence = 0.4;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
