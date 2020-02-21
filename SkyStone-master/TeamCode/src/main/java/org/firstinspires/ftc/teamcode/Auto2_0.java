@@ -2,6 +2,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_TO_POSITION;
@@ -29,28 +31,33 @@ import static java.lang.Math.round;
 import static java.lang.Math.sin;
 
 @Autonomous(name="Template", group="Linear Opmode")
-//@Disabled
+@Disabled
 
-public class Auto2_0 extends LinearOpMode {
+ abstract class Auto2_0 extends LinearOpMode{
+
+    enum SkytonePostion {
+        LEFT, CENTER, RIGHT
+
+    }
 
     // Declare Timer
-    private ElapsedTime runtime = new ElapsedTime();
+    ElapsedTime runtime = new ElapsedTime();
 
     //Declare Hardware Objects
-    private DcMotor frontLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backRightDrive = null;
-    private DcMotor backLeftDrive = null;
-    private DcMotor scissorDrive1 = null;
-    private DcMotor scissorDrive2 = null;
-    private DcMotor turret = null;
-    private DcMotor armSlide = null;
-    private Servo clawServo = null;
-    private Servo pivot = null;
+    DcMotor frontLeftDrive = null;
+    DcMotor frontRightDrive = null;
+    DcMotor backRightDrive = null;
+    DcMotor backLeftDrive = null;
+    DcMotor scissorDrive1 = null;
+    DcMotor scissorDrive2 = null;
+    DcMotor turret = null;
+    DcMotor armSlide = null;
+    Servo clawServo = null;
+    Servo pivot = null;
 
     // Declare Gyro Members
-    private Orientation lastAngles = new Orientation();
-    private double globalAngle;
+    Orientation lastAngles = new Orientation();
+    double globalAngle;
 
     //Declare variables for Mechanum drive
     double frontRightPower = 0;
@@ -65,89 +72,26 @@ public class Auto2_0 extends LinearOpMode {
     final double CENTER_TO_WHEEL = 7.5;
 
     //Constants for Vuforia
-    private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Stone";
-    private static final String LABEL_SECOND_ELEMENT = "Skystone";
-    private static final String VUFORIA_KEY =
+    static final String TFOD_MODEL_ASSET = "Skystone.tflite";
+    static final String LABEL_FIRST_ELEMENT = "Stone";
+    static final String LABEL_SECOND_ELEMENT = "Skystone";
+    static final String VUFORIA_KEY =
             "AUhd2Lb/////AAABmRv7Xr0yMki7nWpz4m/jK4Iyjz08JU9WgDPtM+e3Uma9iu3hex6sMF7gLpjUA23PbhMNA4J4paGE/H2fTZ68ZN/tvN4EooA/B63SLAMPFk3NUrKWX4uWpP+tVy6sMbu4oBcp8oOtovCAmiB6KbcAS0WWkQ2AWxzC3V9Vt2P5425EySCTO8P2qAqB4nFzi9gmdew6odAZrYKtpTo7sl1pKCmgCGKDUXd7w13hBDiIHDJaGCyVqT7HjQmoYYV0uBJgnfhUEh7o5r+a8Sx8/uVqry0perht14zcQmFT9fD5WmokLNshyiUfdY2eBIqgR1+o4EqrywFMchzjCO8sT2hXfwdh+jkF0FCmhuNdpk30Fxbq";
+    // position constatns
+    final double LEFT_LEFT_THRESHOLD = 200;
+    final double LEFT_RIGHT_THRESHOLD = 250;
+
+    final double CENTER_LEFT_THRESHOLD = 250;
+    final double CENTER_RIGHT_THRESHOLD = 300;
+
+    final double RIGHT_LEFT_THRESHOLD = 300;
+    final double RIGHT_RIGHT_THRESHOLD = 350;
 
     //Vuforia setup
-    private VuforiaLocalizer vuforia;
-    private TFObjectDetector tfod;
+    VuforiaLocalizer vuforia;
+    TFObjectDetector tfod;
 
-    @Override
-    public void runOpMode() throws InterruptedException {
-
-        //Initialize Motors
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-        scissorDrive1 = hardwareMap.get(DcMotor.class, "scissor_drive_1");
-        scissorDrive2 = hardwareMap.get(DcMotor.class, "scissor_drive_2");
-        turret = hardwareMap.get(DcMotor.class, "turret");
-        armSlide = hardwareMap.get(DcMotor.class, "arm_slide");
-        pivot = hardwareMap.get(Servo.class, "pivot");
-        clawServo = hardwareMap.get(Servo.class, "claw_servo");
-
-        //Make Motors have correct direction
-        frontLeftDrive.setDirection(FORWARD);
-        backLeftDrive.setDirection(FORWARD);
-        frontRightDrive.setDirection(REVERSE);
-        backRightDrive.setDirection(REVERSE);
-
-        stopAndResetDrive();
-
-        initVuforia();
-
-        initTfod();
-
-        //Telemetry
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
-        // Wait for start
-        waitForStart();
-        runtime.reset();
-
-        // run until the end of the match
-        //The reason the original had a while withing an if: autonomous code should only be run once (I just have another while at the bottom causing it to not loop), but we want the vufoira code to loop until it finds whatever it's looking for.
-        while (opModeIsActive()) {
-
-            if (tfod != null) {
-                // getUpdatedRecognitions() will return null if no new information is available since
-                // the last time that call was made.
-                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                if (updatedRecognitions != null) {
-                    telemetry.addData("# Object Detected", updatedRecognitions.size());
-
-                    // step through the list of recognitions and display boundary info.
-                    for (int i = 0; i < updatedRecognitions.size(); i++) {
-                        Recognition recognition = updatedRecognitions.get(i);
-                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                recognition.getLeft(), recognition.getTop());
-                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                recognition.getRight(), recognition.getBottom());
-                    }
-                }
-            }
-
-            driveWithNoEncoders(.3,90,1000);
-
-            while(opModeIsActive()){}
-
-            if (tfod != null) {
-                tfod.shutdown();
-            }
-
-            //Show Telemetry Data
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Drive Motor Powers","Front Left: %.2f, Front Right: %.2f, Back Left: %.2f, Back Right: %.2f", frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-            telemetry.update();
-        }
-    }
-    public void drive (double distance, int direction, double power) {
+    void drive (double distance, int direction, double power) {
 
         double angle = direction * PI / 180; // 0
         double percentUnWastedRevs = abs(sin(angle+PI/4)); // sqrt2/2
@@ -202,7 +146,7 @@ public class Auto2_0 extends LinearOpMode {
 
     }
 
-    public void driveWithNoEncoders (double power, double direction, int time) throws InterruptedException {
+    void driveWithNoEncoders (double power, double direction, int time) throws InterruptedException {
 
         frontLeftDrive.setMode(RUN_WITHOUT_ENCODER);
         frontRightDrive.setMode(RUN_WITHOUT_ENCODER);
@@ -228,7 +172,7 @@ public class Auto2_0 extends LinearOpMode {
         stopAndResetDrive();
     }
 
-    public void rotate (double power, double degrees) {
+    void rotate (double power, double degrees) {
         double distance = degrees/360 * PI * 2*CENTER_TO_WHEEL;
         double revolutions = distance / WHEEL_CIRCUMFERENCE;
         int ticks = (int)round(revolutions) * TICKS_PER_REVOLUTION_GOBILDA;
@@ -243,7 +187,7 @@ public class Auto2_0 extends LinearOpMode {
         backRightDrive.setPower(power);
     }
 
-    public void stopAndResetDrive () {
+    void stopAndResetDrive () {
         frontRightDrive.setMode(STOP_AND_RESET_ENCODER);
         frontLeftDrive.setMode(STOP_AND_RESET_ENCODER);
         backLeftDrive.setMode(STOP_AND_RESET_ENCODER);
@@ -262,7 +206,7 @@ public class Auto2_0 extends LinearOpMode {
 
     }
 
-    private void initVuforia() {
+    void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          */
@@ -278,12 +222,105 @@ public class Auto2_0 extends LinearOpMode {
         // Loading trackables is not necessary for the TensorFlow Object Detection engine.
     }
 
-    private void initTfod() {
+    void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.8;
+        tfodParameters.minimumConfidence = 0.6;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    }
+
+    List<SkytonePostion> getSkystonePositions () {
+
+        List <SkytonePostion> position = new ArrayList<>();
+
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if ( updatedRecognitions != null) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
+
+                // step through the list of recognitions and display boundary info.
+                for (int i = 0; i < updatedRecognitions.size(); i++) {
+
+                    Recognition recognition = updatedRecognitions.get(i);
+
+                    if (recognition.getLabel() == "Skystone") {
+
+                        double left = recognition.getLeft();
+                        double right = recognition.getRight();
+
+                        if (left > LEFT_LEFT_THRESHOLD && right < LEFT_RIGHT_THRESHOLD ) position.add(SkytonePostion.LEFT);
+
+                        else if (left > CENTER_LEFT_THRESHOLD && right < CENTER_RIGHT_THRESHOLD) position.add(SkytonePostion.CENTER);
+
+                        else if (left > RIGHT_LEFT_THRESHOLD && right < RIGHT_RIGHT_THRESHOLD) position.add(SkytonePostion.RIGHT);
+
+                    }
+                }
+            }
+        }
+
+        return position;
+    }
+
+    void initialize () {
+        //Initialize Motors
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "left_drive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
+        scissorDrive1 = hardwareMap.get(DcMotor.class, "scissor_drive_1");
+        scissorDrive2 = hardwareMap.get(DcMotor.class, "scissor_drive_2");
+        turret = hardwareMap.get(DcMotor.class, "turret");
+        armSlide = hardwareMap.get(DcMotor.class, "arm_slide");
+        pivot = hardwareMap.get(Servo.class, "pivot");
+        clawServo = hardwareMap.get(Servo.class, "claw_servo");
+
+        //Make Motors have correct direction
+        frontLeftDrive.setDirection(FORWARD);
+        backLeftDrive.setDirection(FORWARD);
+        frontRightDrive.setDirection(REVERSE);
+        backRightDrive.setDirection(REVERSE);
+
+        stopAndResetDrive();
+
+        initVuforia();
+
+        initTfod();
+
+        if(tfod != null) {
+            tfod.activate();
+        }
+
+        //Telemetry
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+
+        // Wait for start
+        waitForStart();
+        runtime.reset();
+    }
+
+    SkytonePostion filterPositions( boolean isBlue ) {
+        List<SkytonePostion> skystonePostions = getSkystonePositions();
+        SkytonePostion position = SkytonePostion.RIGHT;
+
+        if (skystonePostions.size() == 0) {
+            if (isBlue) {
+                position = SkytonePostion.LEFT;
+            }
+            if(!isBlue) {
+                position = SkytonePostion.RIGHT;
+            }
+        }
+        else if (skystonePostions.size() == 1) {
+            position = skystonePostions.get(1);
+        }
+
+        return position;
     }
 }

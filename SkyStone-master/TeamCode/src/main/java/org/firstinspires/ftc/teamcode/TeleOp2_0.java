@@ -32,6 +32,8 @@ public class TeleOp2_0 extends LinearOpMode {
     private DcMotor armSlide = null;
     private Servo omegaPinch = null;
     private Servo omegaPivot = null;
+    private Servo clawPinch = null;
+    private Servo clawPivot = null;
 
     // Declare Gyro Members
     private Orientation lastAngles = new Orientation();
@@ -50,12 +52,16 @@ public class TeleOp2_0 extends LinearOpMode {
     boolean omegaPivotToggle = false;
     boolean omegaPinchToggle = false;
 
+    boolean clawPivotToggle = false;
+    boolean clawPinchToggle = false;
+
     //constants
     private final int TURRET_SLEEP_TIME = 10;
     private final int TICKS_PER_REV_TORQUENADO = 1440;
     private final double SCISSOR_GEAR_REDUCTION = 3/1;
     private final double LEAD = .315;
     private final double SCISSOR_STANDOFF = 1.125;
+    private final int TOGGLE_SLEEP_TIME = 200;
 
 
     @Override
@@ -75,6 +81,8 @@ public class TeleOp2_0 extends LinearOpMode {
         omegaPivot = hardwareMap.get(Servo.class, "omega_pivot");
         omegaPinch = hardwareMap.get(Servo.class, "omega_pinch");
         armSlide = hardwareMap.get(DcMotor.class, "arm_drive");
+        clawPivot = hardwareMap.get(Servo.class, "claw_pivot");
+        clawPinch = hardwareMap.get(Servo.class, "claw_pinch");
 
         //Make Motors have correct direction
         frontLeftDrive.setDirection(FORWARD);
@@ -219,27 +227,34 @@ public class TeleOp2_0 extends LinearOpMode {
     }
 
     private void clawOMEGA() throws InterruptedException {
+
+        //Toggle for the
         if (gamepad1.a && !omegaPinchToggle) {
             omegaPinch.setPosition(1);
-            Thread.sleep(200);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPinchToggle=true;
         }
         if (gamepad1.a && omegaPinchToggle) {
             omegaPinch.setPosition(0);
-            Thread.sleep(200);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPinchToggle=false;
             }
 
         if (gamepad1.b && !omegaPivotToggle) {
             omegaPivot.setPosition(1);
-            Thread.sleep(200);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPivotToggle = true;
         }
         if (gamepad1.b && omegaPivotToggle) {
             omegaPivot.setPosition(0);
-            Thread.sleep(200);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPivotToggle = false;
         }
+    }
+
+    private void claw() {
+
+
     }
 
     private void arm() {
