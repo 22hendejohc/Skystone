@@ -109,6 +109,7 @@ public class Sampling extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+
         while (opModeIsActive()) {
             if (tfod != null) {
                 // getUpdatedRecognitions() will return null if no new information is available since

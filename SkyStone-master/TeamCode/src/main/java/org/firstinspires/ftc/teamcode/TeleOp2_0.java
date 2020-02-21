@@ -115,7 +115,7 @@ public class TeleOp2_0 extends LinearOpMode {
         //Assign inputs to variables
         double rotationInput = gamepad1.right_stick_x;
         double xInput = gamepad1.left_stick_x;
-        double yInput = gamepad1.left_stick_y;
+        double yInput = -gamepad1.left_stick_y;
 
         //Turn inputs into wheel powers
         frontLeftPower = rotationInput + xInput + yInput;
@@ -147,15 +147,16 @@ public class TeleOp2_0 extends LinearOpMode {
         if (gamepad2.right_trigger != 0 || gamepad2.left_trigger != 0) {
             if (gamepad2.right_trigger != 0) {
                 scissorDrive.setTargetPosition(scissorDrive.getCurrentPosition()-14);
+                scissorDrive.setPower(1);
                 Thread.sleep(TURRET_SLEEP_TIME);
 
             } else if (gamepad2.left_trigger != 0) {
                 scissorDrive.setTargetPosition(scissorDrive.getCurrentPosition()+14);
+                scissorDrive.setPower(1);
                 Thread.sleep(TURRET_SLEEP_TIME);
             } else {
                 scissorPower = 0;
             }
-            scissorDrive.setPower(1);
         }
         if (gamepad2.a) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(1));
@@ -182,7 +183,7 @@ public class TeleOp2_0 extends LinearOpMode {
         if(gamepad2.dpad_down) {
             scissorDrive.setTargetPosition(0);
         }
-        scissorDrive.setPower(0);
+        scissorDrive.setPower(1);
 
     }
 
