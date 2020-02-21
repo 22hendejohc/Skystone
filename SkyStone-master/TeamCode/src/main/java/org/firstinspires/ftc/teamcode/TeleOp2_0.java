@@ -247,12 +247,12 @@ public class TeleOp2_0 extends LinearOpMode {
 
         //Toggle for the Pinch
         if (gamepad1.a && !omegaPinchToggle) {
-            omegaPinch.setPosition(1);
+            omegaPinch.setPosition(.7);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPinchToggle=true;
         }
         if (gamepad1.a && omegaPinchToggle) {
-            omegaPinch.setPosition(0);
+            omegaPinch.setPosition(.2);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPinchToggle=false;
             }
@@ -260,12 +260,12 @@ public class TeleOp2_0 extends LinearOpMode {
         //toggle for the pivot
 
         if (gamepad1.b && !omegaPivotToggle) {
-            omegaPivot.setPosition(1);
+            omegaPivot.setPosition(.7);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPivotToggle = true;
         }
         if (gamepad1.b && omegaPivotToggle) {
-            omegaPivot.setPosition(0);
+            omegaPivot.setPosition(.2);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPivotToggle = false;
         }
@@ -273,12 +273,12 @@ public class TeleOp2_0 extends LinearOpMode {
 
     private void claw() throws InterruptedException {
         if (gamepad1.x && !clawPinchToggle) {
-            clawPinch.setPosition(1);
+            clawPinch.setPosition(.7);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             clawPinchToggle=true;
         }
         if (gamepad1.x && clawPinchToggle) {
-            clawPinch.setPosition(0);
+            clawPinch.setPosition(.2);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             clawPinchToggle=false;
         }
@@ -286,12 +286,12 @@ public class TeleOp2_0 extends LinearOpMode {
         //toggle for the pivot
 
         if (gamepad1.y && !clawPivotToggle) {
-            clawPivot.setPosition(1);
+            clawPivot.setPosition(.7);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             clawPivotToggle = true;
         }
         if (gamepad1.y && clawPivotToggle) {
-            clawPivot.setPosition(0);
+            clawPivot.setPosition(.2);
             Thread.sleep(TOGGLE_SLEEP_TIME);
             clawPivotToggle = false;
         }
