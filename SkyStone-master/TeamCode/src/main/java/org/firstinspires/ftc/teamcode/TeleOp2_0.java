@@ -113,10 +113,11 @@ public class TeleOp2_0 extends LinearOpMode {
 
             arm();
 
+            claw();
+
             //Show Telemetry Data
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Drive Motor Powers","Front Left: %.2f, Front Right: %.2f, Back Left: %.2f, Back Right: %.2f", frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-            telemetry.addData("Scissor Lift Motor Power,", scissorDrive.getPower());
             telemetry.update();
         }
     }
@@ -157,43 +158,53 @@ public class TeleOp2_0 extends LinearOpMode {
         if (gamepad2.right_trigger != 0 || gamepad2.left_trigger != 0) {
             if (gamepad2.right_trigger != 0) {
                 scissorDrive.setTargetPosition(round(scissorDrive.getCurrentPosition() - 14 * gamepad2.right_trigger));
-                scissorDrive.setPower(1);
+                scissorPower = 1;
                 Thread.sleep(TURRET_SLEEP_TIME);
 
             } else if (gamepad2.left_trigger != 0) {
                 scissorDrive.setTargetPosition(round(scissorDrive.getCurrentPosition() + 14 * gamepad2.left_trigger));
-                scissorDrive.setPower(1);
+                scissorPower = 1;
                 Thread.sleep(TURRET_SLEEP_TIME);
-            } else {
-                scissorPower = 0;
             }
         }
+        else {
+            scissorPower = 0;
+        }
+
         if (gamepad2.a) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(1));
+            scissorPower = 1;
         }
         if (gamepad2.b) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(2));
+            scissorPower = 1;
         }
         if(gamepad2.y) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(3));
+            scissorPower = 1;
         }
         if(gamepad2.x) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(4));
+            scissorPower = 1;
         }
         if(gamepad2.dpad_right) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(5));
+            scissorPower = 1;
         }
         if(gamepad2.dpad_up) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(6));
+            scissorPower = 1;
         }
         if (gamepad2.dpad_left) {
             scissorDrive.setTargetPosition(getScissorRaiseRevs(7));
+            scissorPower = 1;
         }
 
         if(gamepad2.dpad_down) {
             scissorDrive.setTargetPosition(0);
+            scissorPower = 1;
         }
-        scissorDrive.setPower(1);
+        scissorDrive.setPower(scissorPower);
 
     }
 
@@ -228,7 +239,7 @@ public class TeleOp2_0 extends LinearOpMode {
 
     private void clawOMEGA() throws InterruptedException {
 
-        //Toggle for the
+        //Toggle for the Pinch
         if (gamepad1.a && !omegaPinchToggle) {
             omegaPinch.setPosition(1);
             Thread.sleep(TOGGLE_SLEEP_TIME);
@@ -239,6 +250,8 @@ public class TeleOp2_0 extends LinearOpMode {
             Thread.sleep(TOGGLE_SLEEP_TIME);
             omegaPinchToggle=false;
             }
+
+        //toggle for the pivot
 
         if (gamepad1.b && !omegaPivotToggle) {
             omegaPivot.setPosition(1);
@@ -252,8 +265,30 @@ public class TeleOp2_0 extends LinearOpMode {
         }
     }
 
-    private void claw() {
+    private void claw() throws InterruptedException {
+        if (gamepad1.x && !clawPinchToggle) {
+            clawPinch.setPosition(1);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
+            clawPinchToggle=true;
+        }
+        if (gamepad1.x && clawPinchToggle) {
+            clawPinch.setPosition(0);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
+            clawPinchToggle=false;
+        }
 
+        //toggle for the pivot
+
+        if (gamepad1.y && !clawPivotToggle) {
+            clawPivot.setPosition(1);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
+            clawPivotToggle = true;
+        }
+        if (gamepad1.y && clawPivotToggle) {
+            clawPivot.setPosition(0);
+            Thread.sleep(TOGGLE_SLEEP_TIME);
+            clawPivotToggle = false;
+        }
 
     }
 

@@ -4,6 +4,7 @@ I Herby declare this code to by Copyrighted by ME! © Porter T. Dansie 2019
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,7 +18,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_WITHOUT_ENCODE
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 
 @TeleOp(name="Teleop1.0", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class TeleOp1_0 extends LinearOpMode {
 
     // Declare OpMode members.
