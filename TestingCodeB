@@ -1,0 +1,55 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+@Autonomous(name="ByrdTest", group="AutoDrive")
+public class ByrdTest extends LinearOpMode {
+
+    DcMotor leftWheel;
+    DcMotor rightWheel;
+    DcMotor backRightWheel;
+    DcMotor backLeftWheel;
+
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        leftWheel = hardwareMap.dcMotor.get("left_drive");
+        rightWheel = hardwareMap.dcMotor.get("right_drive");
+        backRightWheel = hardwareMap.dcMotor.get("back_right_drive");
+        backLeftWheel = hardwareMap.dcMotor.get("back_left_drive");
+        rightWheel.setDirection(DcMotor.Direction.REVERSE);
+        backRightWheel.setDirection(DcMotor.Direction.REVERSE);
+
+        waitForStart();
+
+        leftWheel.setPower(-.5);
+        backLeftWheel.setPower(-.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(.5);
+
+        sleep(1000);
+
+        leftWheel.setPower(.25);
+        rightWheel.setPower(-.25);
+        backLeftWheel.setPower(-.25);
+        backRightWheel.setPower(.25);
+
+        sleep(100);
+
+        leftWheel.setPower(.65);
+        rightWheel.setPower(-.65);
+        backLeftWheel.setPower(-.65);
+        backRightWheel.setPower(.65);
+
+        sleep(1000);
+
+        leftWheel.setPower(0);
+        backLeftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+
+    }
+}
