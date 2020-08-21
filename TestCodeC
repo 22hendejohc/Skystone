@@ -1,0 +1,443 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+@Autonomous(name="CalebDrive", group="AutoDrive")
+public class CalebDrive extends LinearOpMode {
+
+    DcMotor leftWheel;
+    DcMotor rightWheel;
+    DcMotor backRightWheel;
+    DcMotor backLeftWheel;
+
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        Init();
+
+        waitForStart();
+
+        FullPowerDrive(1950);
+
+        sleep(25);
+
+        RightNine();
+
+        sleep(25);
+
+        Drive(2100);
+
+        sleep(25);
+
+        LeftNine();
+
+        sleep(25);
+
+        BackwardDrive(2100);
+
+        sleep(25);
+
+        RightNine();
+
+        sleep(250);
+
+        leftWheel.setPower(-.5);
+        backLeftWheel.setPower(-.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(.5);
+
+        sleep(1000);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+
+        sleep(25);
+
+        LeftSideDrive(1300);
+
+        RightSideDrive(2550);
+
+        RightNine();
+
+        leftWheel.setPower(.5);
+        backLeftWheel.setPower(.5);
+        rightWheel.setPower(-.5);
+        backRightWheel.setPower(-.5);
+
+        sleep(1025);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+
+        Drive(2125);
+    }
+    //Drive needing time and power
+    public void Drive(double a, double b, double c, double d, int time) {
+        leftWheel.setPower(a);
+        backLeftWheel.setPower(b);
+        rightWheel.setPower(c);
+        backRightWheel.setPower(d);
+
+        sleep(time);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    //Drive set power needs time
+    public void Drive(int time) {
+        leftWheel.setPower(.5);
+        backLeftWheel.setPower(.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(.5);
+
+        sleep(time);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    //Set time drive needs power
+    public void Drive(double a, double b, double c, double d){
+        leftWheel.setPower(a);
+        backLeftWheel.setPower(b);
+        rightWheel.setPower(c);
+        backRightWheel.setPower(d);
+
+        sleep(1150);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    //Rotate right 90
+    public void RightNine(){
+        leftWheel.setPower(.5);
+        backLeftWheel.setPower(.5);
+        rightWheel.setPower(-.5);
+        backRightWheel.setPower(-.5);
+
+        sleep(1055);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    // Rotate left 90
+    public void LeftNine() {
+        leftWheel.setPower(-.5);
+        backLeftWheel.setPower(-.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(.5);
+
+        sleep(1055);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    //Backwards drive set power needs time
+    public void BackwardDrive(int time) {
+        leftWheel.setPower(-.5);
+        backLeftWheel.setPower(-.5);
+        rightWheel.setPower(-.5);
+        backRightWheel.setPower(-.5);
+
+        sleep(time);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    //Mecanum going right needs time
+    public void RightSideDrive(int time) {
+        leftWheel.setPower(.5);
+        backLeftWheel.setPower(-.5);
+        rightWheel.setPower(-.5);
+        backRightWheel.setPower(.5);
+
+        sleep(time);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    //Mecanum going left needs time
+    public void LeftSideDrive(int time) {
+        leftWheel.setPower(-.5);
+        backLeftWheel.setPower(.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(-.5);
+
+        sleep(time);
+
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+        backLeftWheel.setPower(0);
+    }
+    // Initilize
+    public void Init(){
+        leftWheel=hardwareMap.dcMotor.get("left_drive");
+        rightWheel=hardwareMap.dcMotor.get("right_drive");
+        backRightWheel=hardwareMap.dcMotor.get("back_right_drive");
+        backLeftWheel=hardwareMap.dcMotor.get("back_left_drive");
+        rightWheel.setDirection(DcMotor.Direction.REVERSE);
+        backRightWheel.setDirection(DcMotor.Direction.REVERSE);
+    }
+    public void FullDrive(int time) {
+        leftWheel.setPower(.5);
+        backLeftWheel.setPower(.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(.5);
+
+        sleep(100);
+
+        leftWheel.setPower(.75);
+        backLeftWheel.setPower(.75);
+        rightWheel.setPower(.75);
+        backRightWheel.setPower(.75);
+
+        sleep(100);
+
+        leftWheel.setPower(1);
+        backLeftWheel.setPower(1);
+        rightWheel.setPower(1);
+        backRightWheel.setPower(1);
+
+        sleep(time-200);
+
+        leftWheel.setPower(0);
+        backLeftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+    }
+    public void FullPowerDrive(int time) {
+        leftWheel.setPower(.1);
+        backLeftWheel.setPower(.1);
+        rightWheel.setPower(.1);
+        backRightWheel.setPower(.1);
+
+        sleep(10);
+
+        leftWheel.setPower(.2);
+        backLeftWheel.setPower(.2);
+        rightWheel.setPower(.2);
+        backRightWheel.setPower(.2);
+
+        sleep(10);
+
+        leftWheel.setPower(.3);
+        backLeftWheel.setPower(.3);
+        rightWheel.setPower(.3);
+        backRightWheel.setPower(.3);
+
+        sleep(10);
+
+        leftWheel.setPower(.4);
+        backLeftWheel.setPower(.4);
+        rightWheel.setPower(.4);
+        backRightWheel.setPower(.4);
+
+        sleep(10);
+
+        leftWheel.setPower(.5);
+        backLeftWheel.setPower(.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(.5);
+
+        sleep(10);
+
+        leftWheel.setPower(.6);
+        backLeftWheel.setPower(.6);
+        rightWheel.setPower(.6);
+        backRightWheel.setPower(.6);
+
+        sleep(10);
+
+        leftWheel.setPower(.7);
+        backLeftWheel.setPower(.7);
+        rightWheel.setPower(.7);
+        backRightWheel.setPower(.7);
+
+        sleep(10);
+
+        leftWheel.setPower(.8);
+        backLeftWheel.setPower(.8);
+        rightWheel.setPower(.8);
+        backRightWheel.setPower(.8);
+
+        sleep(10);
+
+        leftWheel.setPower(.9);
+        backLeftWheel.setPower(.9);
+        rightWheel.setPower(.9);
+        backRightWheel.setPower(.9);
+
+        sleep(100);
+
+        leftWheel.setPower(1);
+        backLeftWheel.setPower(1);
+        rightWheel.setPower(1);
+        backRightWheel.setPower(1);
+
+        sleep(time-200);
+
+        leftWheel.setPower(.75);
+        backLeftWheel.setPower(.75);
+        rightWheel.setPower(.75);
+        backRightWheel.setPower(.75);
+
+        sleep(25);
+
+        leftWheel.setPower(.5);
+        backLeftWheel.setPower(.5);
+        rightWheel.setPower(.5);
+        backRightWheel.setPower(.5);
+
+        sleep(25);
+
+        leftWheel.setPower(.25);
+        backLeftWheel.setPower(.25);
+        rightWheel.setPower(.25);
+        backRightWheel.setPower(.25);
+
+        sleep(25);
+
+        leftWheel.setPower(-.25);
+        backLeftWheel.setPower(-.25);
+        rightWheel.setPower(-.25);
+        backRightWheel.setPower(-.25);
+
+        sleep(75);
+
+        leftWheel.setPower(0);
+        backLeftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+    }
+    public void FullBackDrive(int time) {
+        leftWheel.setPower(-.1);
+        backLeftWheel.setPower(-.1);
+        rightWheel.setPower(-.1);
+        backRightWheel.setPower(-.1);
+
+        sleep(10);
+
+        leftWheel.setPower(-.2);
+        backLeftWheel.setPower(-.2);
+        rightWheel.setPower(-.2);
+        backRightWheel.setPower(-.2);
+
+        sleep(10);
+
+        leftWheel.setPower(-.3);
+        backLeftWheel.setPower(-.3);
+        rightWheel.setPower(-.3);
+        backRightWheel.setPower(-.3);
+
+        sleep(10);
+
+        leftWheel.setPower(-.4);
+        backLeftWheel.setPower(-.4);
+        rightWheel.setPower(-.4);
+        backRightWheel.setPower(-.4);
+
+        sleep(10);
+
+        leftWheel.setPower(-.5);
+        backLeftWheel.setPower(-.5);
+        rightWheel.setPower(-.5);
+        backRightWheel.setPower(-.5);
+
+        sleep(10);
+
+        leftWheel.setPower(-.6);
+        backLeftWheel.setPower(-.6);
+        rightWheel.setPower(-.6);
+        backRightWheel.setPower(-.6);
+
+        sleep(10);
+
+        leftWheel.setPower(-.7);
+        backLeftWheel.setPower(-.7);
+        rightWheel.setPower(-.7);
+        backRightWheel.setPower(-.7);
+
+        sleep(10);
+
+        leftWheel.setPower(-.8);
+        backLeftWheel.setPower(-.8);
+        rightWheel.setPower(-.8);
+        backRightWheel.setPower(-.8);
+
+        sleep(10);
+
+        leftWheel.setPower(-.9);
+        backLeftWheel.setPower(-.9);
+        rightWheel.setPower(-.9);
+        backRightWheel.setPower(-.9);
+
+        sleep(10);
+
+        leftWheel.setPower(-1);
+        backLeftWheel.setPower(-1);
+        rightWheel.setPower(-1);
+        backRightWheel.setPower(-1);
+
+        sleep(time-200);
+
+        leftWheel.setPower(-.75);
+        backLeftWheel.setPower(-.75);
+        rightWheel.setPower(-.75);
+        backRightWheel.setPower(-.75);
+
+        sleep(25);
+
+        leftWheel.setPower(-.5);
+        backLeftWheel.setPower(-.5);
+        rightWheel.setPower(-.5);
+        backRightWheel.setPower(-.5);
+
+        sleep(25);
+
+        leftWheel.setPower(-.25);
+        backLeftWheel.setPower(-.25);
+        rightWheel.setPower(-.25);
+        backRightWheel.setPower(-.25);
+
+        sleep(25);
+
+        leftWheel.setPower(.25);
+        backLeftWheel.setPower(.25);
+        rightWheel.setPower(.25);
+        backRightWheel.setPower(.25);
+
+        sleep(75);
+
+        leftWheel.setPower(0);
+        backLeftWheel.setPower(0);
+        rightWheel.setPower(0);
+        backRightWheel.setPower(0);
+    }
+}
+
+//NOTES
+// Time for one square at 1/2 power = 1150
+// Time for two squares at 1/2 power = 2450
+// Any 90 degree turn at 1/2 power = 1200 for time
+// For side drive at 1/2 power = 1400 for time
+// Backward drive one swquare at 1/2 power = 1025
