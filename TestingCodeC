@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 @Autonomous(name="CalebDrive", group="AutoDrive")
 public class CalebDrive extends LinearOpMode {
@@ -11,71 +13,15 @@ public class CalebDrive extends LinearOpMode {
     DcMotor rightWheel;
     DcMotor backRightWheel;
     DcMotor backLeftWheel;
-
+    Servo servo0;
+    ColorSensor sensorColor;
 
     @Override
     public void runOpMode() throws InterruptedException {
         Init();
 
         waitForStart();
-
-        FullPowerDrive(1950);
-
-        sleep(25);
-
-        RightNine();
-
-        sleep(25);
-
-        Drive(2100);
-
-        sleep(25);
-
-        LeftNine();
-
-        sleep(25);
-
-        BackwardDrive(2100);
-
-        sleep(25);
-
-        RightNine();
-
-        sleep(250);
-
-        leftWheel.setPower(-.5);
-        backLeftWheel.setPower(-.5);
-        rightWheel.setPower(.5);
-        backRightWheel.setPower(.5);
-
-        sleep(1000);
-
-        leftWheel.setPower(0);
-        rightWheel.setPower(0);
-        backRightWheel.setPower(0);
-        backLeftWheel.setPower(0);
-
-        sleep(25);
-
-        LeftSideDrive(1300);
-
-        RightSideDrive(2550);
-
-        RightNine();
-
-        leftWheel.setPower(.5);
-        backLeftWheel.setPower(.5);
-        rightWheel.setPower(-.5);
-        backRightWheel.setPower(-.5);
-
-        sleep(1025);
-
-        leftWheel.setPower(0);
-        rightWheel.setPower(0);
-        backRightWheel.setPower(0);
-        backLeftWheel.setPower(0);
-
-        Drive(2125);
+        
     }
     //Drive needing time and power
     public void Drive(double a, double b, double c, double d, int time) {
@@ -197,6 +143,9 @@ public class CalebDrive extends LinearOpMode {
         backLeftWheel=hardwareMap.dcMotor.get("back_left_drive");
         rightWheel.setDirection(DcMotor.Direction.REVERSE);
         backRightWheel.setDirection(DcMotor.Direction.REVERSE);
+        servo0 = hardwareMap.servo.get("servo_0");
+        servo0.setPosition(0);
+        sensorColor=hardwareMap.colorSensor.get("sensor_Color");
     }
     public void FullDrive(int time) {
         leftWheel.setPower(.5);
@@ -398,7 +347,7 @@ public class CalebDrive extends LinearOpMode {
         rightWheel.setPower(-1);
         backRightWheel.setPower(-1);
 
-        sleep(time-200);
+        sleep(time - 200);
 
         leftWheel.setPower(-.75);
         backLeftWheel.setPower(-.75);
@@ -435,9 +384,12 @@ public class CalebDrive extends LinearOpMode {
     }
 }
 
-//NOTES
-// Time for one square at 1/2 power = 1150
-// Time for two squares at 1/2 power = 2450
-// Any 90 degree turn at 1/2 power = 1200 for time
-// For side drive at 1/2 power = 1400 for time
-// Backward drive one swquare at 1/2 power = 1025
+/*
+NOTES
+Time for one square at 1/2 power = 1150
+Time for two squares at 1/2 power = 2450
+Any 90 degree turn at 1/2 power = 1200 for time
+For side drive at 1/2 power = 1400 for time
+Backward drive one swquare at 1/2 power = 1025
+servo0.setPosition(0); or servo0.setPosition(1); or anywhere from 0-1
+*/
