@@ -22,6 +22,8 @@ public class CalebDrive extends LinearOpMode {
 
         waitForStart();
         
+        servo0.setPosition(1);
+        
     }
     //Drive needing time and power
     public void Drive(double a, double b, double c, double d, int time) {
