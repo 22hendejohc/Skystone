@@ -147,7 +147,7 @@ public class CalebDrive extends LinearOpMode {
         backRightWheel.setDirection(DcMotor.Direction.REVERSE);
         servo0 = hardwareMap.servo.get("servo_0");
         servo0.setPosition(0);
-        sensorColor=hardwareMap.colorSensor.get("sensor_Color");
+        sensorColor=hardwareMap.colorSensor.get("sensor_color");
     }
     public void FullDrive(int time) {
         leftWheel.setPower(.5);
@@ -245,7 +245,7 @@ public class CalebDrive extends LinearOpMode {
         rightWheel.setPower(1);
         backRightWheel.setPower(1);
 
-        sleep(time-200);
+        sleep(time-350);
 
         leftWheel.setPower(.75);
         backLeftWheel.setPower(.75);
@@ -383,6 +383,12 @@ public class CalebDrive extends LinearOpMode {
         backLeftWheel.setPower(0);
         rightWheel.setPower(0);
         backRightWheel.setPower(0);
+    }
+    public void FullCross() {
+        FullPowerDrive(2625);
+    }
+    public void FullHalfCross() {
+        Drive(5400);
     }
 }
 
